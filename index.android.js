@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   },
   text : {
     fontSize : 20,
+    fontFamily : 'Poiret',
     fontWeight : 'bold',
     color : '#eee',
     textAlign : 'center'
