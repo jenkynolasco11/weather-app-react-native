@@ -4,8 +4,14 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight
+  TouchableWithoutFeedback,
+  Animated,
+  Easing,
+  // Icon,
+  // LinearGradient
 } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import config from './config'
 
 const styles = StyleSheet.create({
@@ -13,7 +19,7 @@ const styles = StyleSheet.create({
     flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
-    backgroundColor : 'steelblue'
+    // backgroundColor : 'steelblue'
   },
   text : {
   //   fontSize : 30,
@@ -42,8 +48,6 @@ const styles = StyleSheet.create({
 
 export default class weatherApp extends Component{
   state = {
-    // message : 'Hi, how are you doing?',
-    // // initialPosition : 'unknown',
     location : 'unknown',
     temp : '',
     tempC : '',
@@ -58,7 +62,8 @@ export default class weatherApp extends Component{
     watchID : 0,
     tries : 1,
     ico : '',
-    desc : ''
+    desc : '',
+    textOpacity : new Animated.Value(1) // opacity
   }
 
   constructor(props) {
@@ -76,57 +81,81 @@ export default class weatherApp extends Component{
       maxF,
       min,
       minC,
-      minF
+      minF,
+      textOpacity
     } = this.state
     const isCelcius = tempUnit === 'C'
+    const delay = 200
 
-    temp = isCelcius ? tempF : tempC
-    tempUnit = isCelcius ? 'F' : 'C'
-    max = isCelcius ? maxF : maxC
-    min = isCelcius ? minF : minC
+    textOpacity.addListener( ({ value }) => {
+      if(!value){
+        temp = isCelcius ? tempF : tempC
+        tempUnit = isCelcius ? 'F' : 'C'
+        max = isCelcius ? maxF : maxC
+        min = isCelcius ? minF : minC
 
-    this.setState({
-      temp,
-      tempUnit,
-      max,
-      min
+        this.setState({
+          temp,
+          tempUnit,
+          max,
+          min
+        })
+      }
+    })
+
+    Animated.sequence([
+        Animated.timing(
+          textOpacity,
+          {
+            toValue : 0,
+            duration : 100,
+            easing : Easing.out(Easing.ease),
+        }),
+        Animated.timing(
+          textOpacity,
+          {
+            toValue : 1,
+            duration : 100,
+            easing : Easing.out(Easing.ease)
+        })
+    ]).start(() => {
+      textOpacity.removeAllListeners()
     })
   }
 
   render() {
     const renderText = ( style, text ) => {
-      // console.warn(text)
-      return (
-          <Text style={style}>
-          {
-            text
-          }
-          </Text>
-      )
+      return <Text style={ style }> { text }</Text>
     }
 
     return (
-
-        <View style={styles.main}>
-          { renderText([ styles.text, styles.title ], 'The weather in your zone') }
-          { renderText([ styles.text, styles.city ], this.state.location ) }
-          <TouchableHighlight onPress={ this.switchTemp.bind(this) }>
-            { renderText([ styles.text, styles.temp ], `${ this.state.temp } °${ this.state.tempUnit }` ) }
-          </TouchableHighlight>
-          { renderText([ styles.text, styles.icon ], this.state.desc ) }
-          {/* <Text style={styles.text}> The weather in your zone</Text>
-          <Text {
-              `Current Position: ${ this.state.location }\n`
-            }
-            {
-              `Current Temperature: ${ this.state.temp }\n`
-            }
-            {
-              `Watch ID: ${ this.state.watchID }`
-            }
-          </Text> */}
-        </View>
-
+      <LinearGradient
+        style={styles.main}
+        colors={[
+          'steelblue',
+          'red',
+          'yellow'
+        ]}
+        locations={[
+          0,0.6,0.8
+        ]}
+        >
+        {/* <View style={styles.main}> */}
+        { renderText([ styles.text, styles.title ], 'The weather in your zone') }
+        { renderText([ styles.text, styles.city ], this.state.location ) }
+        <TouchableWithoutFeedback onPress={ this.switchTemp.bind(this) }>
+          <Animated.View
+            style={{
+              opacity : this.state.textOpacity
+              //
+            }}
+            >
+          { renderText([ styles.text, styles.temp ], `${ this.state.temp } °${ this.state.tempUnit }` ) }
+        </Animated.View>
+        </TouchableWithoutFeedback>
+        { renderText([ styles.text, styles.icon ], this.state.desc ) }
+        {/* // </View> */}
+      </LinearGradient>
     )
   }
 
@@ -140,8 +169,8 @@ export default class weatherApp extends Component{
       const request = `https://rn-weather-app.herokuapp.com/${ config.KEY }/${ location.lon }/${ location.lat }`
 
       try{
-        const data = await fetch(request)
-        const tempData = await data.json()
+        const response = await fetch(request)
+        const tempData = await response.json()
 
         const tempK = tempData.temp.temp.curr
         const tempMinK = tempData.temp.temp.min
@@ -184,8 +213,6 @@ export default class weatherApp extends Component{
           min = minF
           max = maxF
 
-          // console.warn(min,max,temp)
-
           return {
             min,
             minC,
@@ -206,89 +233,12 @@ export default class weatherApp extends Component{
       } catch(err) {
         alert(`something happened, error: ${ err }`)
       }
-      // fetch(request).then( data => data.json()).then( tempData => {
-      // // const tempData = await data.json()
-      // // try{
-      //   console.warn('got data')
-      //   console.warn(JSON.stringify(tempData.temp))
-      //   const tempK = tempData.temp.temp.curr
-      //   const tempMinK = tempData.temp.temp.min
-      //   const tempMaxK = tempData.temp.temp.max
-      //   const area = tempData.temp.name
-      //
-      //   const ico = tempData.temp.weather[ 0 ].icon
-      //   const desc = tempData.temp.weather[ 0 ].main
-      //
-      //   this.setState( state => {
-      //     let {
-      //       temp,
-      //       min,
-      //       max,
-      //       tempC,
-      //       minC,
-      //       maxC,
-      //       tempF,
-      //       minF,
-      //       maxF,
-      //       tempUnit
-      //     } = state
-      //
-      //     const setTempToC = (t) => {
-      //       return Math.round(t - 273.15)
-      //     }
-      //
-      //     const setTempToF = (t) => {
-      //       return Math.round(( t * (9/5) ) + 32)
-      //     }
-      //
-      //     minC = setTempToC(tempMinK)
-      //     minF = setTempToF(minC)
-      //     maxC = setTempToC(tempMaxK)
-      //     maxF = setTempToF(maxC)
-      //     tempC = setTempToC(tempK)
-      //     tempF = setTempToF(tempC)
-      //
-      //     temp = tempF
-      //     tempUnit = 'F'
-      //     min = minF
-      //     max = maxF
-      //
-      //     // console.warn(min,max,temp)
-      //
-      //     return {
-      //       min,
-      //       minC,
-      //       minF,
-      //       max,
-      //       maxC,
-      //       maxF,
-      //       temp,
-      //       tempC,
-      //       tempF,
-      //       tempUnit,
-      //       tries : 1,
-      //       location : area,
-      //       ico,
-      //       desc
-      //     }
-      //   })
-      // }).catch(err => console.error(`something happened: ${ err }`))
     }
-
-    // navigator.geolocation.getCurrentPosition(
-    //   fetchTemp,
-    //   err => {
-    //     alert(JSON.stringify(err))
-    //   }, {
-    //     enableHighAccuracy : true,
-    //     timeout : 20000,
-    //     maximumAge : 10000
-    //   })
 
     const watchID = navigator.geolocation.watchPosition(
       fetchTemp,
       error => {
-        alert(JSON.stringify(error))
+        alert(`something happened, error: ${ JSON.stringify(error) }`)
       }, {
         enableHighAccuracy : true,
         timeout : 20000,
@@ -296,6 +246,19 @@ export default class weatherApp extends Component{
       })
 
       this.setState({ watchID })
+
+      // setTimeout(() => {
+      //   navigator.geolocation.getCurrentPosition(
+      //     fetchTemp,
+      //     err => {
+      //       alert(JSON.stringify(err))
+      //     }, {
+      //       enableHighAccuracy : true,
+      //       timeout : 20000,
+      //       maximumAge : 10000
+      //     }
+      //   )
+      // }, 1000)
   }
 }
 
