@@ -9,9 +9,33 @@ import {
   Easing
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/Ionicons'
-// import Icon from 'react-native-vector-icons/FontAwesome'
+import IoniconsIcons from 'react-native-vector-icons/Ionicons'
+import MaterialCommIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+// import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import config from './config'
+
+const AnimatedIcon = Animated.createAnimatedComponent(IoniconsIcons)
+
+const weatherIcons = [
+  'weather-sunny', // 800 day
+  'weather-night', // 800 night
+
+  'weather-cloudy',   // 802,803,804
+  'weather-fog',  // 741
+  'weather-hail',  // 611,612,906
+  'weather-lightning', // 210,211,212,221
+  'weather-lightning-rainy', // 200,201,202
+  'weather-partlycloudy', // 801
+  'weather-pouring', // 500,511,520
+  'weather-rainy', // 501,502,503,504,521,522,531
+  'weather-snowy-rainy', // 615,616,620,621
+  'weather-snowy', // 600,601,602
+  // 'weather-sunset',
+  // 'weather-sunset-down',
+  // 'weather-sunset-up',
+  'weather-windy',  // 905
+  'weather-windy-variant' // 957
+]
 
 const styles = StyleSheet.create({
   main : {
@@ -50,6 +74,10 @@ const styles = StyleSheet.create({
   },
   icon : {
     fontSize : 24
+  },
+  alignItems : {
+    // flex : 1,
+    alignItems : 'center'
   }
 })
 
@@ -71,7 +99,10 @@ export default class weatherApp extends Component{
     ico : '',
     desc : '',
     textOpacity : new Animated.Value(1), // opacity
-    rotation : new Animated.Value(0) // rotate
+    rotation : new Animated.Value(0), // rotate
+    rotationLoop : 1,  // for rotation
+    rotationFrom : '0deg', // for rotationLoop
+    rotationTo : '360deg', // for rotationLoop
   }
 
   constructor(props) {
@@ -132,27 +163,88 @@ export default class weatherApp extends Component{
   }
 
   render() {
+    const getCurrentWeatherIcon = () => {
+      let icon = 0
+      // TODO: refactor this later....  TOO UGLY!!! XD
+      switch(this.state.ico){
+        case 800:
+          // check if it's day or night
+          // return 0 or 1 respectively
+          break
+        case 802 :
+        case 803 :
+        case 804 :
+          icon = 2
+          break
+        case 741:
+          icon = 3
+          break
+        case 611 :
+        case 612 :
+        case 906 :
+          icon = 4
+          break
+        case 210 :
+        case 211 :
+        case 212 :
+        case 221 :
+          icon = 5
+          break
+        case 200 :
+        case 201 :
+        case 202 :
+          icon = 6
+          break
+        case 801 :
+          icon = 7
+          break
+        case 500 :
+        case 511 :
+        case 520 :
+          icon = 8
+          break
+        case 501 :
+        case 502 :
+        case 503 :
+        case 521 :
+        case 522 :
+        case 531 :
+          icon = 9
+          break
+        case 615 :
+        case 616 :
+        case 620 :
+        case 621 :
+          icon = 10
+          break
+        case 600 :
+        case 601 :
+        case 602 :
+          icon = 11
+          break
+        case 905 :
+          icon = 12
+          break
+        case 957 :
+          icon = 13
+          break
+        default :
+          break
+      }
+
+      return weatherIcons[icon]
+    }
+
     const renderText = ( style, text ) => {
       return <Text style={ style }> { text }</Text>
     }
 
     const spin = this.state.rotation.interpolate({
       inputRange : [0,1],
-      outputRange : ['0deg', '360deg']
-      // inputRange : [ 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ],
-      // outputRange : [
-      //   '0deg',
-      //   '36deg',
-      //   '72deg',
-      //   '108deg',
-      //   '144deg',
-      //   '180deg',
-      //   '216deg',
-      //   '252deg',
-      //   '288deg',
-      //   '324deg',
-      //   '360deg'
-      // ]
+      outputRange : [
+        this.state.rotationFrom,
+        this.state.rotationTo
+      ]
     })
 
     return (
@@ -167,46 +259,22 @@ export default class weatherApp extends Component{
           0,0.6,0.9
         ]}
         >
-        {/* <View style={styles.main}> */}
         <View style={[ styles.titleView ]}>
           {
             renderText([ styles.text, styles.title ], 'The weather in your z')
           }
-          {/* <View
-            style={{
-              transform : [{
-                rotate : this.state.rotation.interpolate({
-                  inputRange : [ 0, 1 ],
-                  outputRange : [ '0deg', '360deg' ]
-                })
-              }]
-            }}
-          > */}
-            {/* <View
-              style={{
-                height : 100,
-                width : 100,
-                backgroundColor : 'red',
-                transform : [{
-                  rotateX : '180deg'
-                },{
-                  rotate : '120deg'
-                }]
-              }}
-            /> */}
-            <Icon
-              style={[
-                styles.titleIcon,
-                { transform : [
-                  // { scale : 1 },
-                  { rotate : spin }
-                ] }
-              ]}
-              name="ios-sunny-outline"
-              size={ 48 }
-              color="yellow"
-            />
-          {/* </View> */}
+          <AnimatedIcon
+            style={[
+              styles.titleIcon,
+              {
+                transform : [
+                { rotate : spin }
+              ] }
+            ]}
+            name={ "ios-sunny-outline" }
+            size={ 48 }
+            color={ "#FF9700" }
+          />
           {
             renderText([ styles.text, styles.title ], 'ne')
           }
@@ -222,8 +290,16 @@ export default class weatherApp extends Component{
           { renderText([ styles.text, styles.temp ], `${ this.state.temp } °${ this.state.tempUnit }` ) }
         </Animated.View>
         </TouchableWithoutFeedback>
-        { renderText([ styles.text, styles.icon ], this.state.desc ) }
-        {/* // </View> */}
+        <View style={[ styles.titleView, styles.alignItems ]}>
+          <MaterialCommIcons
+            // style={[ styles.icon ]}
+            name={ getCurrentWeatherIcon() }
+            size={ 40 }
+            // color={ "#C70039" }
+            color="#FFC300"
+          />
+          { renderText([ styles.text, styles.icon ], this.state.desc ) }
+        </View>
       </LinearGradient>
     )
   }
@@ -245,7 +321,7 @@ export default class weatherApp extends Component{
         const tempMinK = tempData.temp.temp.min
         const tempMaxK = tempData.temp.temp.max
         const area = tempData.temp.name
-        const ico = tempData.temp.weather[ 0 ].icon
+        const ico = tempData.temp.weather[ 0 ].id
         const desc = tempData.temp.weather[ 0 ].main
 
         this.setState( state => {
@@ -315,19 +391,6 @@ export default class weatherApp extends Component{
       })
 
       this.setState({ watchID })
-
-      // setTimeout(() => {
-      //   navigator.geolocation.getCurrentPosition(
-      //     fetchTemp,
-      //     err => {
-      //       alert(JSON.stringify(err))
-      //     }, {
-      //       enableHighAccuracy : true,
-      //       timeout : 20000,
-      //       maximumAge : 10000
-      //     }
-      //   )
-      // }, 1000)
   }
 
   componentDidMount() {
@@ -335,12 +398,32 @@ export default class weatherApp extends Component{
       Animated.timing(
         this.state.rotation,
         {
-          // toValue : this.state.rotation === '360deg' ? '0deg' : '360deg',
           toValue : 1,
-          duration : 1000,
-          easing : Easing.linear(Easing.ease)
+          duration : 5000,
+          easing : Easing.linear
         }
-      ).start(() => animateRotation())
+      ).start(() => {
+        let {
+          rotationLoop,
+          rotationFrom,
+          rotationTo,
+          rotation
+        } = this.state
+
+        rotationLoop = rotationLoop + 1
+        rotationFrom = rotationTo
+        rotationTo = `${ rotationLoop * 360 }deg`
+        rotation = new Animated.Value(0)
+
+        this.setState({
+          rotationLoop,
+          rotationFrom,
+          rotationTo,
+          rotation
+        })
+
+        animateRotation()
+      })
     }
 
     animateRotation()
