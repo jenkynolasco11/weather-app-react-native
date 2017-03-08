@@ -6,12 +6,11 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
-  Easing,
-  // Icon,
-  // LinearGradient
+  Easing
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/Ionicons'
+// import Icon from 'react-native-vector-icons/FontAwesome'
 import config from './config'
 
 const styles = StyleSheet.create({
@@ -23,15 +22,23 @@ const styles = StyleSheet.create({
   },
   text : {
   //   fontSize : 30,
-    fontFamily : 'Poiret One',
+    fontFamily : 'Quicksand',
   //   // fontWeight : 'bold',
-  //   // fontStyle : 'italic',
+    // fontStyle : 'italic',
     color : '#eee',
   //   textAlign : 'center'
   },
   title : {
-    fontSize : 24,
+    fontSize : 26,
     //
+  },
+  titleIcon: {
+    marginLeft : -6,
+    marginTop : -3,
+    marginRight : -13
+  },
+  titleView : {
+    flexDirection : 'row'
   },
   city : {
     fontSize : 16,
@@ -48,22 +55,23 @@ const styles = StyleSheet.create({
 
 export default class weatherApp extends Component{
   state = {
-    location : 'unknown',
-    temp : '',
-    tempC : '',
-    tempF : '',
+    location : 'location unknown',
+    temp : 0,
+    tempC : 0,
+    tempF : 0,
     max : '',
     maxC : '',
     maxF : '',
     min : '',
     minC : '',
     minF : '',
-    tempUnit : '',
+    tempUnit : 'K',
     watchID : 0,
     tries : 1,
     ico : '',
     desc : '',
-    textOpacity : new Animated.Value(1) // opacity
+    textOpacity : new Animated.Value(1), // opacity
+    rotation : new Animated.Value(0) // rotate
   }
 
   constructor(props) {
@@ -108,15 +116,15 @@ export default class weatherApp extends Component{
           textOpacity,
           {
             toValue : 0,
-            duration : 100,
+            duration : 50,
             easing : Easing.out(Easing.ease),
         }),
         Animated.timing(
           textOpacity,
           {
             toValue : 1,
-            duration : 100,
-            easing : Easing.out(Easing.ease)
+            duration : 50,
+            easing : Easing.in(Easing.ease)
         })
     ]).start(() => {
       textOpacity.removeAllListeners()
@@ -128,20 +136,81 @@ export default class weatherApp extends Component{
       return <Text style={ style }> { text }</Text>
     }
 
+    const spin = this.state.rotation.interpolate({
+      inputRange : [0,1],
+      outputRange : ['0deg', '360deg']
+      // inputRange : [ 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ],
+      // outputRange : [
+      //   '0deg',
+      //   '36deg',
+      //   '72deg',
+      //   '108deg',
+      //   '144deg',
+      //   '180deg',
+      //   '216deg',
+      //   '252deg',
+      //   '288deg',
+      //   '324deg',
+      //   '360deg'
+      // ]
+    })
+
     return (
       <LinearGradient
         style={styles.main}
         colors={[
-          'steelblue',
-          'red',
-          'yellow'
+          '#F2E9E4',
+          '#C9ADA7',
+          '#9A8C98'
         ]}
         locations={[
-          0,0.6,0.8
+          0,0.6,0.9
         ]}
         >
         {/* <View style={styles.main}> */}
-        { renderText([ styles.text, styles.title ], 'The weather in your zone') }
+        <View style={[ styles.titleView ]}>
+          {
+            renderText([ styles.text, styles.title ], 'The weather in your z')
+          }
+          {/* <View
+            style={{
+              transform : [{
+                rotate : this.state.rotation.interpolate({
+                  inputRange : [ 0, 1 ],
+                  outputRange : [ '0deg', '360deg' ]
+                })
+              }]
+            }}
+          > */}
+            {/* <View
+              style={{
+                height : 100,
+                width : 100,
+                backgroundColor : 'red',
+                transform : [{
+                  rotateX : '180deg'
+                },{
+                  rotate : '120deg'
+                }]
+              }}
+            /> */}
+            <Icon
+              style={[
+                styles.titleIcon,
+                { transform : [
+                  // { scale : 1 },
+                  { rotate : spin }
+                ] }
+              ]}
+              name="ios-sunny-outline"
+              size={ 48 }
+              color="yellow"
+            />
+          {/* </View> */}
+          {
+            renderText([ styles.text, styles.title ], 'ne')
+          }
+        </View>
         { renderText([ styles.text, styles.city ], this.state.location ) }
         <TouchableWithoutFeedback onPress={ this.switchTemp.bind(this) }>
           <Animated.View
@@ -259,6 +328,22 @@ export default class weatherApp extends Component{
       //     }
       //   )
       // }, 1000)
+  }
+
+  componentDidMount() {
+    const animateRotation = () => {
+      Animated.timing(
+        this.state.rotation,
+        {
+          // toValue : this.state.rotation === '360deg' ? '0deg' : '360deg',
+          toValue : 1,
+          duration : 1000,
+          easing : Easing.linear(Easing.ease)
+        }
+      ).start(() => animateRotation())
+    }
+
+    animateRotation()
   }
 }
 
