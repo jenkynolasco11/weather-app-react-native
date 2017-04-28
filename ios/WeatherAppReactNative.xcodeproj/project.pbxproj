@@ -38,6 +38,7 @@
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* WeatherAppReactNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WeatherAppReactNativeTests.m */; };
+		39E3A8331EB3A6ED003B07F6 /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 39E3A8321EB3A6ED003B07F6 /* Quicksand-Regular.otf */; };
 		57730DB0C3A9432398C73823 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7CA3C45CD3944718C9AB976 /* MaterialIcons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6180FBF931A44DDE9E47E2B0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21D91C9E5E664EB882DF7473 /* Octicons.ttf */; };
@@ -284,6 +285,7 @@
 		292EE0CBDDAD40E082223A27 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* WeatherAppReactNative-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WeatherAppReactNative-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* WeatherAppReactNative-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WeatherAppReactNative-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39E3A8321EB3A6ED003B07F6 /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Quicksand-Regular.otf"; path = "../assets/fonts/Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		67E66DCD6E95483E95144A84 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -546,6 +548,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				39E3A8321EB3A6ED003B07F6 /* Quicksand-Regular.otf */,
 				13B07FAE1A68108700A75B9A /* WeatherAppReactNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* WeatherAppReactNativeTests */,
@@ -949,6 +952,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				19AB8796421B46F2BE542B83 /* poiretone_regular.ttf in Resources */,
 				9AD877481A354E6EA087E558 /* poiretOne_regular.ttf in Resources */,
+				39E3A8331EB3A6ED003B07F6 /* Quicksand-Regular.otf in Resources */,
 				D821C3E1795F40D78DDA1FDD /* Entypo.ttf in Resources */,
 				033BE1D573A14BFCA22D3869 /* EvilIcons.ttf in Resources */,
 				B290E23E040640A68B3EEC88 /* FontAwesome.ttf in Resources */,

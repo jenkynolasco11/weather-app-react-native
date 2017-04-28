@@ -1,4 +1,9 @@
-import { StyleSheet } from 'react-native'
+import { 
+  StyleSheet,
+  Platform
+} from 'react-native'
+
+const isIOS = Platform.OS === 'ios'
 
 export default StyleSheet.create({
   main : {
@@ -10,9 +15,10 @@ export default StyleSheet.create({
   text : {
   //   fontSize : 30,
     fontFamily : 'Quicksand',
+    // fontFamily : isIOS ? 'Iowan Old Style' : 'Poiret One',
   //   // fontWeight : 'bold',
     // fontStyle : 'italic',
-    color : '#eee',
+    // color : '#eee',
   //   textAlign : 'center'
   },
   title : {

@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import {
+    Text,
     Animated,
     Easing
 } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
 
-import MainTitle from './MainTitle.jsx'
-import TouchableButton from './TouchableButton.jsx'
-import WeatherIcon from './WeatherIcon.jsx'
+import MainTitle from './MainTitle'
+import TouchableButton from './TouchableButton'
+import WeatherIcon from './WeatherIcon'
 
 const initialState = {
     location: 'location unknown',
@@ -39,7 +40,7 @@ export default class WeatherInterface extends Component {
     constructor(props) {
         super(props)
 
-        this.switchTemp = this.swtichTemp.bind(this)
+        this.switchTemp = this.switchTemp.bind(this)
     }
 
     switchTemp() {
@@ -59,7 +60,7 @@ export default class WeatherInterface extends Component {
         const isCelcius = tempUnit === 'C'
         const delay = 200
 
-        textOpacity.addListener( { value } => {
+        textOpacity.addListener( ({ value }) => {
             if ( !value ) {
                 temp = isCelcius
                     ? tempF
@@ -202,12 +203,14 @@ export default class WeatherInterface extends Component {
                 <TouchableButton
                     styles={ this.props.styles }
                     switchTemp={ this.switchTemp }
+                    renderText={ renderText }
                     textOpacity={ this.state.textOpacity }
                     temp={ this.state.temp }
                     tempUnit={ this.state.tempUnit }
                 />
                 <WeatherIcon
                     styles={ this.props.styles }
+                    renderText={ renderText }
                     icon={ getCurrentWeatherIcon() }
                     desc={ this.state.desc }
                 />
@@ -335,3 +338,4 @@ export default class WeatherInterface extends Component {
         animateRotation()
     }
 }
+

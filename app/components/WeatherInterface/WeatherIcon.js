@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     TouchableWithoutFeedback,
-    Animated
+    Animated,
+    View
 } from 'react-native'
 
 import MaterialCommIcons from 'react-native-vector-icons/MaterialCommunityIcons'
