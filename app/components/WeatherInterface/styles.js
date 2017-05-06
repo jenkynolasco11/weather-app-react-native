@@ -13,13 +13,8 @@ export default StyleSheet.create({
     // backgroundColor : 'steelblue'
   },
   text : {
-  //   fontSize : 30,
-    fontFamily : 'Quicksand',
-    // fontFamily : isIOS ? 'Iowan Old Style' : 'Poiret One',
-  //   // fontWeight : 'bold',
-    // fontStyle : 'italic',
-    // color : '#eee',
-  //   textAlign : 'center'
+    // fontFamily : 'Quicksand',
+    fontFamily : isIOS ? 'Quicksand' : 'Poiret One',
   },
   title : {
     fontSize : 26,
@@ -31,7 +26,8 @@ export default StyleSheet.create({
     marginRight : -13
   },
   titleView : {
-    flexDirection : 'row'
+    flexDirection : 'row',
+    //
   },
   city : {
     fontSize : 16,
@@ -42,10 +38,11 @@ export default StyleSheet.create({
     //
   },
   icon : {
-    fontSize : 24
+    fontSize : 24,
+    //
   },
   alignItems : {
+    alignItems : 'center',
     // flex : 1,
-    alignItems : 'center'
   }
 })
