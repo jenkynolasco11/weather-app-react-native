@@ -30,19 +30,4 @@ const WeatherApp = props => <WeatherInterface
                             weatherIcons={ weatherIcons }
                         />
 
-// import WeatherApp from '/Users/jenky/Dev/weatherApp/weather-app-react-native/app/components/WeatherInterface/TestComponent.jsx'
-
-// import { View, Text } from 'react-native'
-// export default () => {
-//   return (
-//     <View>
-//       <Text>
-//       {
-//         " This is just a text "
-//       }
-//       </Text>
-//     </View>
-//     )
-// }
-
 export default WeatherApp
