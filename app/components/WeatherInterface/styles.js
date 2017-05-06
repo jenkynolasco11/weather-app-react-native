@@ -15,9 +15,11 @@ export default StyleSheet.create({
   text : {
     // fontFamily : 'Quicksand',
     fontFamily : isIOS ? 'Quicksand' : 'Poiret One',
+    backgroundColor : 'transparent'
   },
   title : {
     fontSize : 26,
+    backgroundColor : 'transparent',
     //
   },
   titleIcon: {
@@ -31,14 +33,17 @@ export default StyleSheet.create({
   },
   city : {
     fontSize : 16,
+    backgroundColor : 'transparent',
     //
   },
   temp : {
     fontSize : 45,
+    backgroundColor : 'transparent',
     //
   },
   icon : {
     fontSize : 24,
+    backgroundColor : 'transparent',
     //
   },
   alignItems : {
