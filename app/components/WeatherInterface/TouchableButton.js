@@ -5,6 +5,8 @@ import {
     Animated
 } from 'react-native'
 
+// Crowdbotics
+
 const TouchableButton = props => {
     const opacity = props.textOpacity
 
